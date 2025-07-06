@@ -39,28 +39,25 @@ const LoginPage = () => {
     },
   });
 
-  const loginMutation = useMutation({
-    mutationFn: async (data: LoginForm) => {
-      const response = await authAPI.login(data.email, data.password);
-      return response.data;
-    },
-    onSuccess: (data) => {
-      setAuth(data.token, data.user);
-      toast({
-        title: 'Welcome back!',
-        description: 'You have successfully logged in.',
-      });
-      navigate(data.user.role === 'admin' ? '/admin' : '/');
-    },
-    onError: (error: any) => {
-      toast({
-        variant: 'destructive',
-        title: 'Login failed',
-        description:
-          error.response?.data?.message || 'Please check your credentials.',
-      });
-    },
-  });
+const loginMutation = useMutation({
+  mutationFn: async (data: LoginForm) => {
+    const response = await authAPI.login(data.email, data.password);
+    return response.data;
+  },
+  onSuccess: (data) => {
+    setAuth(data.token, data.user);
+    toast('Welcome back!', {
+      description: 'You have successfully logged in.'
+    });
+    navigate(data.user.role === 'admin' ? '/admin' : '/');
+  },
+  onError: (error: any) => {
+    toast('Login failed', {
+      description: error.response?.data?.message || 'Please check your credentials.'
+    });
+  },
+});
+
 
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
