@@ -1,0 +1,30 @@
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { useAuthStore } from '@/stores/auth';
+import LoadingSpinner from '@/components/ui/loading-spinner';
+
+// Lazy load pages
+const LoginPage = lazy(() => import('@/pages/auth/login'));
+const RegisterPage = lazy(() => import('@/pages/auth/register'));
+
+
+// Protected route wrapper
+
+function App() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+
+
+        {/* Fallback route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
+  );
+}
+
+export default App; 
